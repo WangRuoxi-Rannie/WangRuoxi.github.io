@@ -26,7 +26,7 @@ title: "基于 CO2 和 GHG 相关指标数据分析全球碳排放情况"
 ![total-ghg-emissions_map_globe_3D](image/total-ghg-emissions_map_globe_3D.html)
 ![北半球气温预测](image/北半球气温预测.html)
 ![中国人均GHG排放量](image/中国人均GHG排放量.html)
-![word cloud](image/word cloud.png)
+![word-cloud](image/word-cloud.png)
 ![GHG排放占比](image/GHG排放占比.png)
 
 ## 查看完整项目文件
