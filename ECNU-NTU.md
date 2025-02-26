@@ -16,7 +16,7 @@ Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 整体课程获得 4.5 的 Grade Point，Grade Description 为 Excellent。
 
 ## 结果展示（摘取部份图表及回归结果）
-![NTU1](image/NTU1.png)
+![NTU](image/NTU.png)
 ![NTU2](image/NTU2.png)
 ![NTU3](image/NTU3.png)
 
