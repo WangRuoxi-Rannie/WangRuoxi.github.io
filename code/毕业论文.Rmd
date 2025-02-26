@@ -1,0 +1,983 @@
+---
+title: "毕业论文"
+author: "王若溪10205000460"
+date: '2024-03-10'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+```{r}
+library(ggplot2)
+library(tidyr)
+library(lattice)
+library(gridExtra)
+library(flextable)#制作表格
+library(bestglm)
+library(leaps)
+library(car)
+library(corrplot)
+library(lmtest)
+library("ivreg")
+library("AER") # 用于线性回归检验
+library("stargazer")# 提供相关异方差稳健标准误
+library(tidyverse)
+library(modelr)
+library(broom)
+library(dplyr)
+```
+
+```{r}
+d1<-read.csv(file="GII.csv")
+
+# 创建数据
+x <- c(1990:2021)
+y<-c(0:1)
+y1 <- d1$Gender.Inequality.Index[d1$Entity == "High human development (UNDP)"]
+y2 <- d1$Gender.Inequality.Index[d1$Entity == "Low human development (UNDP)"]
+y3 <- d1$Gender.Inequality.Index[d1$Entity == "Medium human development (UNDP)"]
+y4 <- d1$Gender.Inequality.Index[d1$Entity == "Very high human development (UNDP)"]
+y5 <- d1$Gender.Inequality.Index[d1$Entity == "World"]
+
+x1 <- d1$Year[d1$Entity == "High human development (UNDP)"]
+x2 <- d1$Year[d1$Entity == "Low human development (UNDP)"]
+x3 <- d1$Year[d1$Entity == "Medium human development (UNDP)"]
+x4 <- d1$Year[d1$Entity == "Very high human development (UNDP)"]
+# 绘制折线图
+plot(x, y5, ylim=c(0.1, 0.72),type="o", col="cornflowerblue", pch=16, xlab="Year", ylab="Gender.Inequality.Index", main="Overview of Gender Inequality Indicators")
+lines(x1, y1, type="o",pch=15, col="chartreuse4")
+lines(x2, y2, type="o",pch=8, col="chartreuse4")
+lines(x3, y3, type="o", pch=2,col="chartreuse4")
+lines(x4, y4, type="o", pch=3,col="chartreuse4")
+
+legend("bottomleft", legend=c("High human development", "Low human development", "Medium human development", "Very high human development", "World"), col=c("chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4","cornflowerblue"), lty=1, pch=c(15,8,2,3,16), cex=0.6)
+```
+```{r}
+d<-read.csv(file="GDI.csv")
+d<-d[1:40,]
+rownames(d) = d[,1]
+d = d[,-1]
+
+x<-subset(d,Degree.of.national.development<=4)
+x <- x[order(x$Gender.Development.Index,decreasing = TRUE),]
+x$Degree.of.national.development <- factor(x$Degree.of.national.development)
+x$color[x$Degree.of.national.development==1] <- "chartreuse3"
+x$color[x$Degree.of.national.development==2] <- "cadetblue1"
+x$color[x$Degree.of.national.development==3] <- "yellow2"
+x$color[x$Degree.of.national.development==4] <- "plum1"
+dotchart(x$Gender.Development.Index,labels = row.names(x),cex=.7,groups = x$Degree.of.national.development,gcolor ="black",color = x$color,pch=19,
+main = "Overview of countries represented in the Gender Development Index in 2021",
+xlab = "Gender Development Index")
+```
+```{r}
+d2<-read.csv(file="HDI.csv")
+
+# 创建数据
+x <- seq(1950, 2000, by=10)
+y<-seq(50,80, by=5)
+y1 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "East Asia"]
+y2 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Eastern Europe"]
+y3 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Latin America and Caribbean"]
+y4 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Middle East and North Africa"]
+y5 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "South and South-East Asia"]
+y6 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Sub-Sahara Africa"]
+y7 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Western Europe"]
+y8 <- d2$Regional.averages.of.the.composite.gender.equality.index[d2$Entity == "Western Offshoots"]
+
+# 绘制折线图
+plot(x, y1, ylim=c(50,80),type="o", col="gold", pch=16, xlab="Year", ylab="Historical Gender Equality Index", main="Overview of Historical Gender Equality Index for 1950-2000")
+lines(x, y2, type="o",pch=8, col="coral2")
+lines(x, y3, type="o", pch=2,col="darkolivegreen3")
+lines(x, y4, type="o", pch=3,col="black")
+lines(x, y5, type="o",pch=5, col="darkviolet")
+lines(x, y6, type="o",pch=7, col="deepskyblue2")
+lines(x, y7, type="o", pch=9,col="chartreuse4")
+lines(x, y8, type="o",pch=12,col="darkorange1")
+legend("bottomright", legend=c("East Asia", "Eastern Europe", "Latin America and Caribbean", "Middle East and North Africa", "South and South-East Asia","Sub-Sahara Africa","Western Europe","Western Offshoots"), col=c("gold", "coral2", "darkolivegreen3", "black","darkviolet","deepskyblue2","chartreuse4","darkorange1"), lty=1, pch=c(16,8,2,3,5,7,9,12), cex=0.5)
+```
+```{r}
+d3<-read.csv(file="ILO1.csv")
+d3 <- d3[order(d3$obs_value, decreasing = TRUE), ]
+par(mar=c(5, 13, 3, 5)) 
+barplot(d3$obs_value~d3$ref_area.label,main="Organisation or continental area in 2021 Gender Pay Gap",xlab="Gender Income Gap (%)",ylab="",horiz=TRUE,col="olivedrab3", las=1)
+
+```
+```{r}
+d4<-read.csv(file="ILO.csv")
+
+# 创建数据
+x <- c(2011:2021)
+
+y1 <- d4$obs_value[d4$ref_area.label == "World"]
+y2 <- d4$obs_value[d4$ref_area.label == "World: Low income"]
+y3 <- d4$obs_value[d4$ref_area.label == "World: Lower-middle income"]
+y4 <- d4$obs_value[d4$ref_area.label == "World: Upper-middle income"]
+y5 <- d4$obs_value[d4$ref_area.label == "World: High income"]
+
+
+# 绘制折线图
+plot(x, y5, ylim=c(25,60),type="o", col="chartreuse4", pch=16, xlab="Year", ylab="Gender Income Gap (%)", main="Overview of the gender income gap 2011-2021")
+lines(x, y1, type="o",pch=15, col="chartreuse4")
+lines(x, y2, type="o",pch=8, col="chartreuse4")
+lines(x, y3, type="o", pch=2,col="chartreuse4")
+lines(x, y4, type="o", pch=3,col="chartreuse4")
+
+legend("bottomright", legend=c("World", "World: Low income", "World: Lower-middle income", "World: Upper-middle income", "World: High income"), col=c("chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4","chartreuse4"), lty=1, pch=c(15,8,2,3,16), cex=0.6)
+```
+```{r}
+# 创建一个示例数据集
+d5<-read.csv(file="GDP1.csv")
+d5$Income.classifications <- as.factor(d5$Income.classifications)
+# 使用ggplot2创建点图并添加名称标签
+ggplot(d5, aes(x = GDP.per.capita, y = Gender.wage.gap..., shape = Income.classifications, label = Country)) +
+  geom_point(size = 4, color = "chartreuse4") +
+  geom_text(hjust = -0.2, vjust = -0.3,size=2.8) +  # 调整标签位置
+  labs(title = "Graph of changes in GDP per capita and gender pay gap", x = "GDP per capita ($)", y = "Gender Wage Gap (%)")+
+  scale_shape_manual(values = c(15,16,17)) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_color_gradient(low = "lightblue", high = "chartreuse4")+
+  theme(legend.position =  c(0.8, 0.2)) +  # 图例位置
+  guides(shape = guide_legend(title = "Income Classifications"))  # 图例标题
+```
+```{r}
+# 使用ggplot2创建点图并添加名称标签
+ggplot(d5, aes(x = GDP.per.capita, y = Gender.wage.gap..., shape = Continents, label = Country)) +
+  geom_point(size = 4, color = "chartreuse4") +
+  geom_text(hjust = -0.2, vjust = -0.3,size=2.8) +  # 调整标签位置
+  labs(title = "Graph of changes in GDP per capita and gender pay gap", x = "GDP per capita ($)", y = "Gender Wage Gap (%)")+
+  scale_shape_manual(values = c(18,15,16,17)) + 
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_color_gradient(low = "lightblue", high = "chartreuse4")+
+  theme(legend.position =  c(0.8, 0.2)) +  # 图例位置
+  guides(shape = guide_legend(title = "Continents"))  # 图例标题
+```
+```{r}
+x<-read.csv(file="linear regression.csv")
+x$GDI[x$GDI=='..'] <- NA
+x=na.omit(x)
+f1<-x$Labour.force.participation.rate..Female
+m1<-x$Labour.force.participation.rate..Male
+x1<- x$GDI
+plot(x1,f1,pch=11,col="darkgreen",xlab="Gender Development Index",ylab="labor force participation rate (%)",ylim = c(0,100))
+title("Comparison of male and female labor force participation rates in 2021")
+points(x1,m1,pch=10,col="skyblue",cex=2)
+x$GDI=as.numeric(x$GDI)
+x$Labour.force.participation.rate..Female=as.numeric(x$Labour.force.participation.rate..Female)
+x$Labour.force.participation.rate..Male=as.numeric(x$Labour.force.participation.rate..Male)
+a<-round(mean(x$GDI),2)
+b<-round(mean(x$Labour.force.participation.rate..Female),2)
+c<-round(mean(x$Labour.force.participation.rate..Male),2)
+abline(h=b,v=a,col="gold",lty=2)
+points(a,b,cex=2,col="gold",pch=18)
+abline(h=c,v=a,col="gold",lty=2)
+points(a,c,cex=2,col="gold",pch=18)
+text(a,b,paste("mean of female:",b),pos=2,cex=0.8)
+text(a,c,paste("mean of male:",c),pos=2,cex=0.8)
+legend("bottomleft",c("Female","Male","mean"),pch=c(11,10,18),col=c("darkgreen","skyblue","gold"))
+```
+```{r}
+par(mfrow=c(3,4))
+opar<-par(no.readonly = TRUE)
+p<-read.csv(file="The proportion of women in the base salary.csv")
+year<-c(2010:2021)
+col<-c(rep(c("lightblue1"),4),rep(c("skyblue2"),4),rep(c("steelblue3"),4))
+
+for (i in 1:12) {
+  j<-(subset(p,Year==year[i],select = Proportion.of.women.among.low.wage.workers))$Proportion.of.women.among.low.wage.workers
+  plot(density(j),main=paste("low-paid women ",year[i]),cex=0.9,xlim=c(0,100))
+  polygon(density(j),col=col[i],border="gold")
+  rug(j,col="blue")
+}
+par(opar)
+```
+```{r}
+opar<-par(no.readonly = TRUE)
+m<-read.csv(file="Earnings of women and men.csv")
+par(mfrow=c(2,3))
+m1<-subset(m,Country=="Brazil")
+m1$Sex<-factor(m1$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m1$Year<-factor(m1$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m1,varwidth=TRUE,col=c("pink2","skyblue"),main="Brazil's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+m2<-subset(m,Country=="India")
+m2$Sex<-factor(m2$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m2$Year<-factor(m2$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m2,varwidth=TRUE,col=c("pink2","skyblue"),main="India's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+m3<-subset(m,Country=="Italy")
+m3$Sex<-factor(m3$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m3$Year<-factor(m3$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m3,varwidth=TRUE,col=c("pink2","skyblue"),main="Italy's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+m4<-subset(m,Country=="Mexico")
+m4$Sex<-factor(m4$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m4$Year<-factor(m4$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m4,varwidth=TRUE,col=c("pink2","skyblue"),main="Mexico's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+m5<-subset(m,Country=="Armenia")
+m5$Sex<-factor(m5$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m5$Year<-factor(m5$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m5,varwidth=TRUE,col=c("pink2","skyblue"),main="Armenia's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+m6<-subset(m,Country=="Peru")
+m6$Sex<-factor(m6$Sex,levels = c("Female","Male"),labels = c("Female","Male"))
+m6$Year<-factor(m6$Year,levels = c("2017","2018","2019","2020","2021"),labels = c("2017","2018","2019","2020","2021"))
+boxplot(Average.monthly.income~Sex*Year,data=m6,varwidth=TRUE,col=c("pink2","skyblue"),main="Peru's gender income",xlab="Categorized by sex and year",ylab = "Average monthly income")
+par(opar)
+```
+```{r}
+# 创建一个示例数据集，包含国家名、收入0.1%前的比例和收入10%前的比例
+d7<-read.csv(file="top income.csv")
+d7<-d7[,-1]
+d71<-d7[1:7,]
+d72<-d7[8:14,]
+d73<-d7[15:21,]
+d74<-d7[22:28,]
+# 将数据从宽格式转换为长格式
+library(tidyr)
+data_long1 <- gather(d71, key = "IncomeLevel", value = "IncomePercentage", -Country)
+data_long2 <- gather(d72, key = "IncomeLevel", value = "IncomePercentage", -Country)
+data_long3 <- gather(d73, key = "IncomeLevel", value = "IncomePercentage", -Country)
+data_long4 <- gather(d74, key = "IncomeLevel", value = "IncomePercentage", -Country)
+# 使用ggplot2创建柱状图，一个国家对应两根柱子，并用不同颜色区分
+library(ggplot2)
+
+
+p1<-ggplot(data_long1, aes(x = Country, y = IncomePercentage, fill = IncomeLevel)) +
+  geom_bar(stat = "identity", position = "dodge") +
+   theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.ticks.x = element_line(size = 1))+
+  labs(title = "Year-2000", x="", y = "Income Percentage(%)") +
+  scale_fill_manual(values = c("Income_1" = "lightblue", "Income_10" = "darkblue"))  # 为不同的柱子分配不同的颜色
+
+
+# 使用ggplot2创建柱状图，一个国家对应两根柱子，并用不同颜色区分
+
+p2<-ggplot(data_long2, aes(x = Country, y = IncomePercentage, fill = IncomeLevel)) +
+  geom_bar(stat = "identity", position = "dodge") +
+   theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.ticks.x = element_line(size = 1))+
+  labs(title = "Year-2005", x="", y = "Income Percentage(%)") +
+  scale_fill_manual(values = c("Income_1" = "lightblue", "Income_10" = "darkblue"))  # 为不同的柱子分配不同的颜色
+
+
+
+# 使用ggplot2创建柱状图，一个国家对应两根柱子，并用不同颜色区分
+
+p3<-ggplot(data_long3, aes(x = Country, y = IncomePercentage, fill = IncomeLevel)) +
+  geom_bar(stat = "identity", position = "dodge") +
+   theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.ticks.x = element_line(size = 1))+
+  labs(title = "Year-2010",  x="",y = "Income Percentage(%)") +
+  scale_fill_manual(values = c("Income_1" = "lightblue", "Income_10" = "darkblue"))  # 为不同的柱子分配不同的颜色
+
+# 使用ggplot2创建柱状图，一个国家对应两根柱子，并用不同颜色区分
+
+p4<-ggplot(data_long4, aes(x = Country, y = IncomePercentage, fill = IncomeLevel)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme(axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+        axis.ticks.x = element_line(size = 1))+
+  labs(title = "Year-2015",x="", y = "Income Percentage(%)") +
+  scale_fill_manual(values = c("Income_1" = "lightblue", "Income_10" = "darkblue"))  # 为不同的柱子分配不同的颜色
+
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+```{r}
+#2021年25-64岁的总体至少受中等教育及以上的比例
+x1<-read.csv(file="education1.csv")
+opar<-par(no.readonly = TRUE)
+par(mfrow=c(2,2))
+a1<-x1$Population.with.at.least.some.secondary.education.Femlale.
+h<-hist(a1,freq=FALSE,breaks=12,col="lightpink",xlab="Population with at least some secondary education-Female(%)",main="Density plot for females in 2021",cex.lab= 0.9)
+rug(jitter(a1))
+lines(density(a1),col="olivedrab3",lwd=2)
+box()
+
+a2<-x1$Population.with.at.least.some.secondary.education.Male.
+h<-hist(a2,freq=FALSE,breaks=12,col="lightblue2",xlab="Population with at least some secondary education-Male(%)",main="Density plot for males in 2021",cex.lab= 0.9)
+rug(jitter(a2))
+lines(density(a2),col="olivedrab3",lwd=2)
+box()
+
+h<-hist(a1,breaks=12,col="lightpink",xlab="Population with at least some secondary education-Female(%)",main="Frequency plot for females in 2021",cex.lab= 0.9)
+x1fit<-seq(min(a1),max(a1),length=40)
+y1fit<-dnorm(x1fit,mean=mean(a1),sd=sd(a1))
+y1fit<-y1fit*diff(h$mids[1:2])*length(a1)
+lines(x1fit,y1fit,col="olivedrab3",lwd=2)
+box()
+
+h<-hist(a2,breaks=12,col="lightblue2",xlab="Population with at least some secondary education-Male(%)",main="Frequency plot for males in 2021",cex.lab= 0.9)
+x2fit<-seq(min(a2),max(a2),length=40)
+y2fit<-dnorm(x2fit,mean=mean(a2),sd=sd(a2))
+y2fit<-y2fit*diff(h$mids[1:2])*length(a2)
+lines(x2fit,y2fit,col="olivedrab3",lwd=2)
+box()
+par(opar)
+```
+```{r}
+# 创建示例数据
+df <- read.csv(file="education2.csv")
+df<-df[,1:5]
+# 重塑数据
+df_long <- tidyr::gather(df, key = "AgeGroup", value = "Value", -Gender)
+
+# 创建箱型图
+p <- ggplot(df_long, aes(x = AgeGroup, y = Value, fill = Gender)) +
+  geom_boxplot(position = position_dodge(width = 0.8), width = 0.7) +
+  scale_fill_manual(values = c( "pink","lightblue") ,labels = c("women", "men")) +  # 设置颜色
+  labs(title = "Age Group Distribution by Gender in 2021", x = "Age Group", y = "Population with at least some secondary education", fill = "Gender") +  # 设置标题和标签
+  theme_minimal() +  # 设置主题为minimal风格
+  theme(legend.position = "top",plot.title = element_text(hjust = 0.5))# 设置图例位置为顶部
+ 
+
+# 显示图形
+print(p)
+
+```
+```{r}
+# 创建示例数据
+df <- read.csv(file="education3.csv")
+# 将数据从宽格式转换为长格式
+df_long <- gather(df, key = "Category", value = "Value")
+
+# 创建箱型图
+p <- ggplot(df_long, aes(x = Category, y = Value, fill = Category)) +
+  geom_boxplot() +
+  labs(title = "Women's income relative to men by level of education in 2021", x = "Educational Level", y = "Women's income relative to men(men=100)") +
+  theme_minimal() +  # 设置主题为minimal风格
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_fill_manual(values = rep(c( "darkblue","lightblue","lightblue","lightblue"), length(unique(df_long$Category)))) +
+    theme(axis.text.x = element_text(size = 10, angle = 5, hjust = 1),
+        axis.ticks.x = element_line(size = 1))+
+  guides(fill = FALSE)  # 隐藏图例
+
+# 显示图形
+print(p)
+```
+```{r}
+opar<-par(no.readonly = TRUE)
+g<-read.csv(file="GIDDB2019_15062022103259579.csv")
+Region<- factor(g$Region, levels=c("Africa", "Americas", "Asia","Europe"),
+labels=c("Africa", "Americas", "Asia","Europe"))
+
+Income<- factor(g$Income, levels=c("High income","Upper middle income","Lower middle income ","Low income"),
+labels=c("High income","Upper middle income","Lower middle income ","Low income"))
+
+histogram(~g$Value|Region*Income,
+main="Early marriage of women",
+xlab="Proportion of women aged 15 to 19 who marry early",ylab="The percentage of the total population of the type",col="powderblue",bg="lightpink",xlim=c(0,60))
+```
+```{r}
+df <- read.csv(file="marrige.csv")
+
+a1<-df$Country1
+a2<-df$Country2
+d1<-c()
+d2<-c()
+d3<-c()
+for(i in a1){
+  if(i %in% a2){
+    a<-which(a2==i)
+    b<-which(a1==i)
+    d1<-c(d1,i)
+    d2<-c(d2,df$early.marrige.rate...[b])
+    d3<-c(d3,df$GII[a])
+  }
+}
+
+d<-data.frame(
+  Country = d1,
+  rate = d2,
+  GII= d3
+)
+d$GII<-as.numeric(d$GII)
+ggplot(d, aes(x =rate, y = GII, label = Country)) +
+  geom_point(size = 3.5, color = "chartreuse4") +
+  geom_text(hjust = -0.2, vjust = -0.3,size=2.3) +  # 调整标签位置
+  labs(title = "Plot of changes in the proportion of early marriages and GII", x = "Early Marrige Rate", y = "GII")+
+  scale_y_continuous(breaks = c(0.1, 0.2,0.3,0.4,0.5,0.6,0.7, 0.8)) +
+  scale_color_gradient(low = "lightblue", high = "chartreuse4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.y = element_text(size = 10))
+  #scale_y_discrete(breaks = c(0,0.5,1))+
+  #geom_hline(yintercept = 0.5, linetype = "dashed", color = "red")
+
+```
+
+
+```{r}
+d9<-read.csv(file="marrige2.csv")
+
+# 创建数据
+x <- c(1973:2021)
+
+y1 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Hungary"]
+y2 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Denmark"]
+y3 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Netherlands"]
+y4 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Norway"]
+y5 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Sweden"]
+y6 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Iceland"]
+y7 <- d9$Estimated.average.age.at.marriage..women..UN.[d9$Entity == "Finland"]
+
+x1 <- d9$Year[d9$Entity == "Hungary"]
+x2 <- d9$Year[d9$Entity == "Denmark"]
+x3 <- d9$Year[d9$Entity == "Netherlands"]
+x4 <- d9$Year[d9$Entity == "Norway"]
+x5 <- d9$Year[d9$Entity == "Sweden"]
+x6 <- d9$Year[d9$Entity == "Iceland"]
+x7 <- d9$Year[d9$Entity == "Finland"]
+
+# 绘制折线图
+plot(x1, y1, xlim=c(1973,2021),ylim=c(20,33), col="chartreuse4", pch=16, xlab="Year", ylab="average age at marriage", main="Overview of average age at marriage 1973-2021")
+points(x2, y2,pch=8, col="chartreuse4")
+points(x3, y3, pch=2,col="chartreuse4")
+points(x4, y4, pch=3,col="chartreuse4")
+points(x5, y5,pch=15, col="chartreuse4")
+points(x6, y6, pch=7,col="chartreuse4")
+points(x7, y7, pch=9,col="chartreuse4")
+legend("bottomright", legend=c("Hungary", "Denmark", "Netherlands", "Norway","Sweden","Iceland","Finland"), col=c("chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4","chartreuse4","chartreuse4","chartreuse4"), lty=1, pch=c(16,8,2,3,15,7,9), cex=0.8)
+```
+```{r}
+opar<-par(no.readonly = TRUE)
+v<-read.csv(file="Women's political voice.csv")
+rownames(v) = v[,2]
+v = v[,-2]
+Region<- factor(v$Region, levels=c("Asia","Americas","Europe","Africa"), labels=c(1,2,3,4))
+ggplot(data=v, aes(x=Value, y=Income, colour=Region)) + 
+  geom_point() +labs(title="The impact of women's political participation on local women's income", x="Proportion of women in politics", y="Women's earnings") +
+  geom_smooth(method="lm", color="burlywood4", linetype=4)+
+  geom_text(aes(Value,Income,label=rownames(v)),color="pink3",check_overlap = T)
+```
+```{r}
+df <- read.csv(file="politics.csv")
+
+a1<-df$Country1
+a2<-df$Country2
+a3<-df$Country3
+d1<-c()
+d2<-c()
+d3<-c()
+d4<-c()
+for(i in a1){
+  if(i %in% a2 & i %in% a3){
+    a<-which(a1==i)
+    b<-which(a2==i)
+    c<-which(a3==i)
+    d1<-c(d1,i)
+    d2<-c(d2,df$GII[a])
+    d3<-c(d3,df$Value[b])
+    d4<-c(d4,df$continents[c])
+  }
+}
+
+d<-data.frame(
+  Country = d1,
+  GII = d2,
+  Value= d3,
+  Continents=d4
+)
+
+d$GII<-as.numeric(d$GII)
+d$Continents <- as.factor(d$Continents)
+ggplot(d, aes(x =Value, y = GII,shape = Continents, label = Country)) +
+  geom_point(size = 4, color = "chartreuse4") +
+  geom_text(hjust = -0.2, vjust = -0.3,size=2.3) +  # 调整标签位置
+  labs(title = "Women in managerial positions vs GII", x = "Proportion of women in managerial positions(%)", y = "GII")+
+  scale_y_continuous(breaks = c(0.0,0.1, 0.2,0.3,0.4,0.5,0.6)) +
+  scale_color_gradient(low = "lightblue", high = "chartreuse4")+
+  scale_shape_manual(values = c(18,15,16,17,10,11)) + 
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.y = element_text(size = 10))+
+  theme(legend.position =  c(0.92, 0.2)) +  # 图例位置
+  guides(shape = guide_legend(title = "Continents"))  # 图例标题
+  #scale_y_discrete(breaks = c(0,0.5,1))+
+  #geom_hline(yintercept = 0.5, linetype = "dashed", color = "red")
+```
+```{r}
+d9<-read.csv(file="politics1.csv")
+
+# 创建数据
+x <- c(2000:2021)
+
+y1 <- d9$Value[d9$Region == "World"]
+y2 <- d9$Value[d9$Region == "Asia"]
+y3 <- d9$Value[d9$Region == "Europe"]
+y4 <- d9$Value[d9$Region == "Africa"]
+y5 <- d9$Value[d9$Region == "Americas"]
+y6 <- d9$Value[d9$Region == "Oceania"]
+
+
+x1 <- d9$Year[d9$Region == "World"]
+x2 <- d9$Year[d9$Region == "Asia"]
+x3 <- d9$Year[d9$Region == "Europe"]
+x4 <- d9$Year[d9$Region == "Africa"]
+x5 <- d9$Year[d9$Region == "Americas"]
+x6 <- d9$Year[d9$Region == "Oceania"]
+
+
+# 绘制折线图
+plot(x1, y1, xlim=c(2000,2021),ylim=c(16,41), col="chartreuse4", pch=16, xlab="Year", ylab="Proportion of women in managerial positions", main="Overview of women in managerial positions 2000-2021")
+points(x2, y2,pch=8, col="chartreuse4")
+points(x3, y3, pch=2,col="chartreuse4")
+points(x4, y4, pch=3,col="chartreuse4")
+points(x5, y5,pch=15, col="chartreuse4")
+points(x6, y6, pch=7,col="chartreuse4")
+
+legend("bottomright", legend=c("World", "Asia", "Europe","Afirca","Americas","Oceania"), col=c("chartreuse4", "chartreuse4", "chartreuse4", "chartreuse4","chartreuse4","chartreuse4"), lty=1, pch=c(16,8,2,3,15,7,9), cex=0.8)
+```
+
+```{r}
+df <- read.csv(file="politics2.csv")
+
+a1<-df$Country1
+a2<-df$Country2
+d1<-c()
+d2<-c()
+d3<-c()
+for(i in a2){
+  if(i %in% a1){
+    a<-which(a2==i)
+    b<-which(a1==i)
+    d1<-c(d1,i)
+    d2<-c(d2,df$GDI[b])
+    d3<-c(d3,df$wom_emp_vdem_owid[a])
+  }
+}
+
+d<-data.frame(
+  Country = d1,
+  GDI = d2,
+  wom_emp_vdem_owid= d3
+)
+d$GDI<-as.numeric(d$GDI)
+ggplot(d, aes(x =wom_emp_vdem_owid, y = GDI, label = Country)) +
+  geom_point(size = 4, color = "chartreuse4") +
+  geom_text(hjust = -0.2, vjust = -0.3,size=2.3) +  # 调整标签位置
+  labs(title = "Female Political Empowerment Index vs GDI", x = "Female Political Empowerment Index", y = "GDI")+
+  scale_y_continuous(breaks = c(0.4,0.5,0.6,0.7,0.8,0.9,1.0)) +
+  scale_color_gradient(low = "lightblue", high = "chartreuse4")+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(axis.text.y = element_text(size = 10))
+  #scale_y_discrete(breaks = c(0,0.5,1))+
+  #geom_hline(yintercept = 0.5, linetype = "dashed", color = "red")
+```
+```{r}
+#Law mandates equal remuneration for females and males for work of equal value (1=yes; 0=no)
+df<-read.csv(file="Society.csv")
+a1<-df$Country1
+a2<-df$Country2
+d1<-c()
+d2<-c()
+d3<-c()
+for(i in a2){
+  if(i %in% a1){
+    a<-which(a2==i)
+    b<-which(a1==i)
+    d1<-c(d1,i)
+    d2<-c(d2,df$GII[b])
+    d3<-c(d3,df$Law[a])
+  }
+}
+
+x<-data.frame(
+  Country = d1,
+  GII = d2,
+  Law= d3
+)
+
+a1<-subset(x, Law == 0)
+a2<-subset(x, Law == 1)
+a1[a1=='..'] <- NA
+a1=na.omit(a1)
+a2[a2=='..'] <- NA
+a2=na.omit(a2)
+# 将'a1$GII'转换为数值数据类型
+a1$GII <- as.numeric(as.character(a1$GII))
+a2$GII <- as.numeric(as.character(a2$GII))
+opar<-par(no.readonly = TRUE)
+par(mfrow=c(1,2))
+h1<-hist(a1$GII,breaks=6,col="lightblue2",xlab="GII",main="Frequency plot for law=0")
+x1fit<-seq(min(a1$GII),max(a1$GII),length=40)
+y1fit<-dnorm(x1fit,mean=mean(a1$GII),sd=sd(a1$GII))
+y1fit<-y1fit*diff(h1$mids[1:2])*length(a1$GII)
+lines(x1fit,y1fit,col="olivedrab3",lwd=2)
+box()
+h2<-hist(a2$GII,breaks=6,col="darkgreen",xlab="GII",main="Frequency plot for law=1")
+x2fit<-seq(min(a2$GII),max(a2$GII),length=40)
+y2fit<-dnorm(x2fit,mean=mean(a2$GII),sd=sd(a2$GII))
+y2fit<-y2fit*diff(h2$mids[1:2])*length(a2$GII)
+lines(x2fit,y2fit,col="olivedrab3",lwd=2)
+box()
+
+par(opar)
+```
+```{r}
+df<-read.csv(file="Female-to-male ratio of time devoted to unpaid care work.csv")
+a<-df$Female.to.male.ratio.of.time.devoted.to.unpaid.care.work..OECD..2014..
+h<-hist(a,breaks=12,col="lightblue2",xlab="Ratio of Unpaid Care Work",main="Frequency plot for time spent by women and men on household chores")
+ticks <- seq(min(a), max(a), length.out = nclass.Sturges(a))
+formatted_ticks <- sprintf("%.2f", ticks)
+axis(side = 1, at = ticks, labels = formatted_ticks)
+x1fit<-seq(min(a),max(a),length=40)
+y1fit<-dnorm(x1fit,mean=mean(a),sd=sd(a))
+y1fit<-y1fit*diff(h$mids[1:2])*length(a)
+lines(x1fit,y1fit,col="olivedrab3",lwd=2)
+box()
+
+```
+```{r}
+df<-read.csv(file="Society1.csv")
+df<-df[,1:2]
+# 绘制箱型图
+boxplot(df, col = c("lightblue", "lightpink"), names = c("Male", "Female"), 
+        xlab = "Gender", ylab = "Proportion of bank accounts with access to ownership", main = "Boxplot of bank account ownership in 2021")
+
+```
+
+
+```{r}
+data <- read.csv("linear regression.csv")
+data$GII[data$GII=='..'|data$Expected.years.of.schooling.Female=='..'] <- NA
+data=na.omit(data)
+rownames(data)=data[,1] #取出第一列
+data=data[,-1] #将第一列删除
+head(data)
+```
+
+
+```{r}
+par(mfrow=c(1,2))
+hist(as.numeric(data$GII),main="histogram of GII",col="darkgreen",xlab="GII")
+hist(log(as.numeric(data$GII)),main="histogram of log(GII)",col="dark green",xlab="log(GII)")
+```
+```{r}
+data$degree.of.development<-as.factor(data$degree.of.development)
+data$GII<-as.numeric(data$GII)
+data$Maternal.mortality.ratio<-as.numeric(data$Maternal.mortality.ratio)
+data$Adolescent.birth.rate<-as.numeric(data$Adolescent.birth.rate)
+data$Share.of.seats.in.parliament<-as.numeric(data$Share.of.seats.in.parliament)
+data$Population.with.at.least.some.secondary.education.Female<-as.numeric(data$Population.with.at.least.some.secondary.education.Female)
+data$Population.with.at.least.some.secondary.education.Male<-as.numeric(data$Population.with.at.least.some.secondary.education.Male)
+data$Labour.force.participation.rate..Female<-as.numeric(data$Labour.force.participation.rate..Female)
+data$Labour.force.participation.rate..Male<-as.numeric(data$Labour.force.participation.rate..Male)
+data$Life.expectancy.at.birth.Female<-as.numeric(data$Life.expectancy.at.birth.Female)
+data$Life.expectancy.at.birth.Male<-as.numeric(data$Life.expectancy.at.birth.Male)
+data$Expected.years.of.schooling.Female<-as.numeric(data$Expected.years.of.schooling.Female)
+data$Expected.years.of.schooling.Male<-as.numeric(data$Expected.years.of.schooling.Male)
+data$Mean.years.of.schooling.Female<-as.numeric(data$Mean.years.of.schooling.Female)
+data$Mean.years.of.schooling.Male<-as.numeric(data$Mean.years.of.schooling.Male)
+data$Estimated..gross.national.income.per.capita.Female<-as.numeric(data$Estimated..gross.national.income.per.capita.Female)
+data$Estimated..gross.national.income.per.capita.Male<-as.numeric(data$Estimated..gross.national.income.per.capita.Male)
+
+summary(data)
+
+```
+
+
+```{r}
+#全模型-可看单个系数显著性
+data <- cbind(data, model.matrix(~ degree.of.development - 1, data = data))
+Full.lm1 = lm(data$GII ~data$degree.of.development1+data$degree.of.development2+data$degree.of.development3+data$degree.of.development4+data$Maternal.mortality.ratio+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Population.with.at.least.some.secondary.education.Female+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Life.expectancy.at.birth.Female+data$Expected.years.of.schooling.Female+data$Mean.years.of.schooling.Female+data$Estimated..gross.national.income.per.capita.Female+data$Population.with.at.least.some.secondary.education.Male+data$Labour.force.participation.rate..Male+data$Life.expectancy.at.birth.Male+data$Life.expectancy.at.birth.Male+data$Expected.years.of.schooling.Male+data$Mean.years.of.schooling.Male+data$Estimated..gross.national.income.per.capita.Male,data)
+summary(Full.lm1)
+as_flextable(Full.lm1)
+```
+```{r}
+#残差检验通过，符合正态性
+aov1 <- aov(Full.lm1)
+#summary(aov1)
+plot(aov1$fitted.values, aov1$residuals,
+pch = 22, bg = "darkgrey",
+xlab = "Predicted", ylab = "Residuals",
+sub="Plot of residuals versus fitted values")
+abline(h = 0)
+hist(aov1$residuals,main="histogram of residuals",col="darkgreen",xlab="residuals")
+```
+```{r}
+Restrict.lm1 = lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male,data)
+summary(Restrict.lm1)
+as_flextable(Restrict.lm1)
+```
+```{r}
+a1<-c()
+for(i in aov1$residuals){a1<-c(i^2,a1)}
+RSS1<-sum(a1)
+aov2 <- aov(Restrict.lm1)
+a2<-c()
+for(i in aov2$residuals){a2<-c(i^2,a2)}
+RSS2<-sum(a2)
+RSS1
+RSS2
+```
+
+```{r}
+new_data <-data[,c(2:21)]
+bestglm(new_data)
+```
+```{r}
+Restrict1.lm1 = lm(data$GII ~data$degree.of.development1+data$degree.of.development2+data$degree.of.development3+data$Maternal.mortality.ratio+data$Labour.force.participation.rate..Female+data$Expected.years.of.schooling.Female+data$Mean.years.of.schooling.Female,data)
+summary(Restrict1.lm1)
+as_flextable(Restrict1.lm1)
+```
+```{r}
+Restrict2.lm1 = lm(data$GII ~data$degree.of.development1+data$Maternal.mortality.ratio+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male+data$Expected.years.of.schooling.Female+data$Mean.years.of.schooling.Female,data)
+summary(Restrict2.lm1)
+as_flextable(Restrict2.lm1)
+```
+```{r}
+Restrict.lm1 = lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male+data$Mean.years.of.schooling.Female,data)
+summary(Restrict.lm1)
+as_flextable(Restrict.lm1)
+```
+```{r}
+aov2 <- aov(Restrict.lm1)
+summary(aov2)
+
+```
+
+
+```{r}
+confint(Restrict.lm1)
+predict(Restrict.lm1, interval="confidence", level=0.95)[1:5,]
+predict(Restrict.lm1, interval="prediction", level=0.95)[1:5,]
+```
+```{r}
+pred.int <- predict(Restrict.lm1, interval="prediction", level=0.95)
+mydata <- cbind(data, pred.int)
+# 2. 绘制回归线和置信区间
+p <- ggplot(mydata, aes(data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male+data$Mean.years.of.schooling.Female,data$GII)) +
+  labs(x='Linear combination of explanatory variables',y=" Response Variables")+
+  geom_point() +
+  stat_smooth(method = lm)
+# 3. 绘制预测区间
+p + geom_line(aes(y = mydata$lwr), color = "darkgreen", linetype = "dashed")+
+    geom_line(aes(y = mydata$upr), color = "darkgreen", linetype = "dashed")
+```
+
+
+
+```{r}
+vif(Restrict.lm1)
+```
+```{r}
+data2<-cbind(data$degree.of.development1,data$Adolescent.birth.rate,data$Share.of.seats.in.parliament,data$Labour.force.participation.rate..Female,data$Life.expectancy.at.birth.Female,data$Labour.force.participation.rate..Male,data$Estimated..gross.national.income.per.capita.Male,data$Mean.years.of.schooling.Female)
+df_cor=cor(data2)
+kappa(df_cor, exact=T) 
+```
+```{r}
+corr<-cor(data2);corr
+corrplot(corr,method="number",type="full" ,bg="black",tl.col = "blue")
+```
+
+```{r}
+aaa<-step(Restrict.lm1,direction="both")
+as_flextable(aaa)
+```
+
+```{r}
+#异方差性检验
+rst <- rstandard(Restrict.lm1)#标准化残差
+fit<-predict(Restrict.lm1)#预测值
+mn<-data.frame(rst,fit)
+ggplot(mn,aes(fit,rst))+geom_point()+geom_hline(yintercept = 2, linetype = "dashed")+geom_hline(yintercept = -2, linetype = "dashed")+geom_hline(yintercept = 3, linetype = "solid")+geom_hline(yintercept = -3, linetype = "solid")+scale_y_continuous( breaks = c(-3,-2,0,2,3))
+```
+```{r}
+as_flextable(gqtest(Restrict.lm1))
+# 运行White检验
+bptest(Restrict.lm1)
+# 运行Heteroscedasticity-Glesjer检验
+ncvTest(Restrict.lm1)
+```
+```{r}
+e<-resid(Restrict.lm1)#e是标准化残差
+b1<-lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male+data$Mean.years.of.schooling.Female,weights=1/abs(e),data=data)
+b1
+summary(b1)
+as_flextable(b1)
+Restrict.lm1<-b1
+```
+
+```{r}
+df<-read.csv(file="endogenous.csv")
+a1<-df$Country1
+a2<-df$Country2
+a3<-df$Entity
+d1<-c()
+d2<-c()
+d3<-c()
+d4<-c()
+d5<-c()
+d6<-c()
+d7<-c()
+d8<-c()
+d9<-c()
+d10<-c()
+d11<-c()
+d12<-c()
+
+for(i in a1){
+  if(i %in% a2 & i %in% a3){
+    a<-which(a1==i)
+    b<-which(a2==i)
+    c<-which(a3==i)
+    d1<-c(d1,i)
+    d2<-c(d2,df$GII[a])
+    d3<-c(d3,df$continents[b])
+    d4<-c(d4,df$Population[c])
+    d5<-c(d5,df$Adolescent.birth.rate[a])
+    d6<-c(d6,df$Share.of.seats.in.parliament[a])
+    d7<-c(d7,df$Labour.force.participation.rate..Female[a])
+    d8<-c(d8,df$Labour.force.participation.rate..Male[a])
+    d9<-c(d9,df$Life.expectancy.at.birth.Female[a])
+    d10<-c(d10,df$Mean.years.of.schooling.Female[a])
+    d11<-c(d11,df$Estimated..gross.national.income.per.capita.Male[a])
+    d12<-c(d12,df$degree.of.development1[a])
+    
+  }
+}
+
+x<-data.frame(
+  Country = d1,
+  GII = d2,
+  Continents= d3,
+  Population=d4,
+  Adolescent.birth.rate=d5,
+  Share.of.seats.in.parliament=d6,
+  Labour.force.participation.rate..Female=d7,
+  Labour.force.participation.rate..Male=d8,
+  Life.expectancy.at.birth.Female=d9,
+  Mean.years.of.schooling.Female=d10,
+  Estimated..gross.national.income.per.capita.Male=d11,
+  degree.of.development1=d12)
+```
+
+
+```{r}
+#两阶段最小二乘估计--two-stage least squares (TSLS)
+m_iv1 <- ivreg(GII ~ Mean.years.of.schooling.Female+Share.of.seats.in.parliament+Adolescent.birth.rate + Labour.force.participation.rate..Female +Labour.force.participation.rate..Male+Life.expectancy.at.birth.Female+Estimated..gross.national.income.per.capita.Male+degree.of.development1|Continents+Population+Adolescent.birth.rate + Labour.force.participation.rate..Female + Labour.force.participation.rate..Male+Life.expectancy.at.birth.Female+Estimated..gross.national.income.per.capita.Male+degree.of.development1, data = x)
+coeftest(m_iv1,vcov=vcovHC,type="HC1")# 异方差稳健标准误
+summary(m_iv1,test = TRUE) # 诊断
+as_flextable(m_iv1)
+```
+
+```{r}
+data.frame(
+RMSE=rmse(Restrict.lm1,data=data),
+ MAE=mae(Restrict.lm1,data=data)
+)
+glance(Restrict.lm1)
+
+data.frame(
+ RMSE=rmse(m_iv1,data=x),
+ MAE=mae(m_iv1,data=x)
+)
+glance(m_iv1)
+
+```
+
+```{r}
+data.frame(
+ RMSE=rmse(robust,data=data),
+ MAE=mae(robust,data=data)
+)
+glance(robust)
+```
+
+```{r}
+model1<- lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Male+data$Mean.years.of.schooling.Female+data$Adolescent.birth.rate:data$Labour.force.participation.rate..Female+data$Adolescent.birth.rate:data$Labour.force.participation.rate..Male+data$Estimated..gross.national.income.per.capita.Female:data$Mean.years.of.schooling.Female+data$Estimated..gross.national.income.per.capita.Male:data$Mean.years.of.schooling.Male+data$Estimated..gross.national.income.per.capita.Female:data$Life.expectancy.at.birth.Female+data$Estimated..gross.national.income.per.capita.Male:data$Life.expectancy.at.birth.Male+data$Expected.years.of.schooling.Female:data$Labour.force.participation.rate..Female+data$Expected.years.of.schooling.Male:data$Labour.force.participation.rate..Male+data$Share.of.seats.in.parliament:data$Labour.force.participation.rate..Female,data=data)
+summary(model1)
+as_flextable(model1)
+```
+```{r}
+model21<- lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Mean.years.of.schooling.Female+data$Labour.force.participation.rate..Female:data$Adolescent.birth.rate+data$Labour.force.participation.rate..Male:data$Adolescent.birth.rate+data$Share.of.seats.in.parliament:data$Labour.force.participation.rate..Female,data=data)
+summary(model21)
+as_flextable(model21)
+```
+```{r}
+model2<- lm(data$GII ~data$degree.of.development1+data$Adolescent.birth.rate+data$Share.of.seats.in.parliament+data$Labour.force.participation.rate..Female+data$Life.expectancy.at.birth.Female+data$Labour.force.participation.rate..Male+data$Mean.years.of.schooling.Female+data$Labour.force.participation.rate..Female:data$Adolescent.birth.rate+data$Share.of.seats.in.parliament:data$Labour.force.participation.rate..Female,data=data)
+summary(model2)
+as_flextable(model2)
+```
+
+
+```{r}
+data.frame(
+ RMSE=rmse(model2,data=data),
+ MAE=mae(model2,data=data)
+)
+#一次性做完所有指标的
+#p值低意味着模型显著性更大
+glance(model2)
+```
+
+
+```{r}
+Restrict.lm1<-model2
+```
+
+
+```{r}
+# 创建一个示例数据集
+set.seed(123)
+datap <- read.csv(file="Prediction.csv")
+
+# 定义一个函数来进行线性拟合和预测
+linear_predict <- function(df, value_type) {
+  model <- lm(df[[value_type]] ~ year, data = df)
+  future_years <- data.frame(year = 2022:2033)
+  predicted_values <- predict(model, newdata = future_years)
+  return(predicted_values)
+}
+
+# 针对每个地域和每个value进行预测
+predicted_data <- datap %>% 
+  group_by(region) %>% 
+  do({
+    new_values <- cbind(year = 2022:2033, 
+                        sapply(c("Life.expectancy.at.birth.Female", "Mean.years.of.schooling.Female", "Adolescent.birth.rate","Share.of.seats.in.parliament", "Labour.force.participation.rate..Female", "Labour.force.participation.rate..Male"), function(value_type) linear_predict(., value_type)))
+    data.frame(region = rep(unique(.$region), each = 12), new_values)
+  })
+
+# 合并预测的数据和原始数据
+combined_data <- rbind(datap, predicted_data)
+
+# 绘制2014到2033年每个地域对应值的散点图（以Life.Expectancy.at.Birth.female为例）
+ggplot(combined_data %>% filter(year >= 2014), aes(x = year, y = Life.expectancy.at.birth.Female, color = region)) +
+  geom_point() +
+  labs(title = "Life expectancy at birth Female Changes from 2014 to 2033 by Region", x = "Year", y = "Life expectancy at birth Female") +
+  theme_minimal()
+# 绘制2014到2033年每个地域对应值的散点图（以Mean.years.of.schooling.Female为例）
+ggplot(combined_data %>% filter(year >= 2014), aes(x = year, y = Mean.years.of.schooling.Female, color = region)) +
+  geom_point() +
+  labs(title = "Mean years of schooling Female Changes from 2014 to 2033 by Region", x = "Year", y = "Mean years of schooling Female") +
+  theme_minimal()
+```
+
+```{r}
+d1<-c(rep(0,36),rep(1,12),rep(0,12))
+predicted_data1<-cbind(predicted_data,"degree.of.development1"=d1)[,c(3:9)]
+f<-c()
+
+for(i in 1:60){
+  d<-predicted_data1[c(i),]
+  y<-(1.020e+00)-(6.612e-02)*d[7]+(3.595e-03)*d[3]-(8.674e-03)*d[4]-(2.679e-03)*d[5]-(6.817e-03)*d[1]+(1.504e-03)*d[6]-(1.260e-02)*d[2]-(3.372e-05)*d[5]*d[3]+(1.008e-04)*d[4]*d[5]
+  y<-unname(y)
+  y<-unlist(y, recursive = FALSE)
+  f<-c(f,y)
+}
+
+
+predicted_data<-cbind(predicted_data,"GII"=f)
+# 绘制散点图
+ggplot(predicted_data, aes(x = year, y = GII, color = region)) +
+  geom_point() +
+  labs(title = "GII over Years by Region", x = "Year", y = "GII") +
+  scale_x_continuous(breaks = seq(2022, 2033, 1)) + 
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+```
+
+
