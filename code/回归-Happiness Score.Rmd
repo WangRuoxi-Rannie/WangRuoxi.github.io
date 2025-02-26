@@ -1,0 +1,31 @@
+---
+title: "Happiness Score"
+output: html_document
+date: '2023-02-14'
+---
+```{r}
+setwd("C:/Users/1/Desktop")
+data <- read.csv("sj1.csv")
+data
+lm1 = lm(Happiness.score ~data$Explained.by..GDP.per.capita+data$Explained.by..Social.support+data$Explained.by..Healthy.life.expectancy+data$Explained.by..Freedom.to.make.life.choices+data$Explained.by..Generosity+data$Explained.by..Perceptions.of.corruption,data)
+summary(lm1)
+```
+```{r}
+ESP.output = function(lm.obj){
+  EE = round(lm.obj$coefficients[-1] * 2,5)
+  aov.obj = anova(lm.obj)
+  SS = round(aov.obj[-nrow(aov.obj), 2],5)
+  PC = round(SS / sum(aov.obj[, 2]) * 100 ,5)
+  output1 = cbind(EE,SS,PC)
+  return(output1)
+}
+#sum of square
+ESP.output(lm1)
+```
+```{r}
+#方差分析
+aov1 <- aov(lm1)
+summary(aov1)
+
+```
+
