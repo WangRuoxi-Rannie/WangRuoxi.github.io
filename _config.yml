@@ -1,1 +1,4 @@
 theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-include-cache
