@@ -10,9 +10,8 @@ title: "Lofter 官方认证同人文手"
 - 担任过数次站内大型节日 24h 联文企划的负责人，除创作同人文外，擅长制作宣传海报，邀请站内知名老师参与企划。拥有良好的美工排版能力和审美水平，拥有将一项企划从宣发到推动落地的全流程监管能力。
 
 ## 主页展示
-![NTU](image/NTU.png)
-![NTU2](image/NTU2.png)
-![NTU3](image/NTU3.png)
+![lof1](image/lof1.png)
+![lof2](image/lof2.png)
 
 ## Lofter个人界面
 [Rannie西西的Lofter博客](https://rannie453.lofter.com)
