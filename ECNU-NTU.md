@@ -21,5 +21,5 @@ Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 ![NTU3](image/NTU3.png)
 
 ## 查看完整项目文件
-- 查看完整的 R Markdown 和 python 代码：[回归-Happiness Score.Rmd](code/回归-Happiness Score.Rmd) / [幸福指数与影响因素.ipynb](code/幸福指数与影响因素.ipynb)
-- 下载项目完整报告：[NTU 2023 Winter.pptx](pdf/NTU 2023 Winter.pptx)
+- 查看完整的 R Markdown 和 python 代码：[回归-Happiness-Score.Rmd](code/回归-Happiness-Score.Rmd) / [幸福指数与影响因素.ipynb](code/幸福指数与影响因素.ipynb)
+- 下载项目完整报告：[NTU-2023-Winter.pptx](pdf/NTU-2023-Winter.pptx)
