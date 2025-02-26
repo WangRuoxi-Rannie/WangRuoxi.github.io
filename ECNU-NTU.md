@@ -16,10 +16,10 @@ Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 整体课程获得 4.5 的 Grade Point，Grade Description 为 Excellent。
 
 ## 结果展示（摘取部份图表及回归结果）
-![不同年份女性低收入占比核密度图](image/09.png)
-![部分国家男女收入对比箱线图](image/10.png)
-![女性早婚和GII关系图](image/16.png)
+![NTU1](image/NTU1.png)
+![NTU2](image/NTU2.png)
+![NTU3](image/NTU3.png)
 
 ## 查看完整项目文件
-- 查看完整的 R Markdown 代码：[毕业论文.Rmd](code/毕业论文.Rmd)
-- 下载项目完整报告：[王若溪-毕业论文终稿.pdf](pdf/王若溪-毕业论文终稿.pdf)
+- 查看完整的 R Markdown 和 python 代码：[回归-Happiness Score.Rmd](code/回归-Happiness Score.Rmd) / [幸福指数与影响因素.ipynb](code/幸福指数与影响因素.ipynb)
+- 下载项目完整报告：[NTU 2023 Winter.pptx](pdf/NTU 2023 Winter.pptx)
