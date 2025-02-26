@@ -9,10 +9,9 @@ title: "基于世界范围内男女性劳动力市场表现数据的性别不平
 ## 流程图展示
 将整体思路绘制成两页 A4 纸长度的流程图，包含对所有情况的讨论。
 
-![不同年份女性低收入占比核密度图](image/09.png)
-![部分国家男女收入对比箱线图](image/10.png)
-![女性早婚和GII关系图](image/16.png)
+![流程图1](image/流程图1.png)
+![流程图2](image/流程图2.png)
 
 ## 查看完整项目文件
-- 查看完整的 R Markdown 代码：[毕业论文.Rmd](code/毕业论文.Rmd)
-- 下载项目完整报告：[王若溪-毕业论文终稿.pdf](pdf/王若溪-毕业论文终稿.pdf)
+- 查看完整的 R Markdown 代码：[Project_Group4.R](code/Project_Group4.R)
+- 下载项目完整报告：[5305_Report.docx](pdf/5305_Report.docx)
