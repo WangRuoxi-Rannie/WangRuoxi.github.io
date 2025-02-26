@@ -5,7 +5,7 @@ description: 我的项目和作品集展示
 author: Wang Ruoxi
 
 # 导航链接 - 如果你想简化顶部导航，可以减少这里的项目或完全移除
-navbar-links:{}
+navbar-links: {}
 
 # 移除这部分如果你不需要顶部导航栏
 # 如果想完全没有导航栏，使用: navbar-links: {}
