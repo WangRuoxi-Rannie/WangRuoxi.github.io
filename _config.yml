@@ -1,1 +1,92 @@
-theme: minima
+# 站点基础设置
+remote_theme: daattali/beautiful-jekyll
+title: WangRuoxi的个人网站
+description: 我的项目和作品集展示
+author: Wang Ruoxi
+
+# 导航链接 - 如果你想简化顶部导航，可以减少这里的项目或完全移除
+navbar-links:{}
+
+# 移除这部分如果你不需要顶部导航栏
+# 如果想完全没有导航栏，使用: navbar-links: {}
+
+# 社交网络链接，取消注释你需要的部分
+social-network-links:
+  email: e1373313@u.nus.edu
+  WeChat: Wrxxlsq11150901
+  # github: yourusername
+  # twitter: yourusername
+  # patreon: yourname
+  # youtube: yourchannelname
+  # reddit: yourname
+  # linkedin: yourname
+  # xing: yourname
+  # stackoverflow: "yourno/yourname"
+  # instagram: yourname
+  # spotify: yourname
+  telephone: +86 18082936005/+65 83607237
+  # steam: yourname
+  # twitch: yourname
+  # yelp: yourname
+  # calendly: yourname
+  # mastodon: instance.url/@username
+
+# 页面底部信息
+footer-links-active:
+  rss: false
+  facebook: false
+  email: false
+  twitter: false
+  github: false
+  linkedin: false
+  xing: false
+  stackoverflow: false
+  instagram: false
+  telephone: false
+
+# 网站外观设置
+# 如果你不想要顶部大图，设置为false
+header-img: false
+navbar-col: "#EAEAEA"
+navbar-text-col: "#404040"
+navbar-border-col: "#DDDDDD"
+page-col: "#FFFFFF"
+text-col: "#404040"
+link-col: "#008AFF"
+hover-col: "#0085A1"
+footer-col: "#EAEAEA"
+footer-text-col: "#777777"
+footer-link-col: "#404040"
+
+# 分析和评论设置 - 不需要可以忽略
+# google_analytics: ""
+# disqus: ""
+
+# 其他设置
+permalink: /:year-:month-:day-:title/
+paginate: 5
+excerpt_length: 50
+title-separator: "-"
+
+# 高级设置
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+
+
+# 默认值配置
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: true
+      social-share: true
+  -
+    scope:
+      path: ""
+    values:
+      layout: "page"
+      comments: false
