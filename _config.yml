@@ -53,16 +53,16 @@ footer-links-active:
 # 网站外观设置
 # 如果你不想要顶部大图，设置为false
 header-img: true
-navbar-col: "#FF9F1C"
+navbar-col: "#2EC4B6"
 navbar-text-col: "#FFFFFF"
-navbar-border-col: "#FFBF69"
-page-col: "#FFFFFF"
-text-col: "#2A2A2A"
-link-col: "#FF5400"
+navbar-border-col: "#CBF3F0"
+page-col: "#FDFFFC"
+text-col: "#011627"
+link-col: "#2EC4B6"
 hover-col: "#FF9F1C"
-footer-col: "#FFF6E8"
-footer-text-col: "#2A2A2A"
-footer-link-col: "#FF5400"
+footer-col: "#CBF3F0"
+footer-text-col: "#011627"
+footer-link-col: "#2EC4B6"
 
 # 分析和评论设置 - 不需要可以忽略
 # google_analytics: ""
