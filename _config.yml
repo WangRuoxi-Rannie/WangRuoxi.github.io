@@ -53,16 +53,36 @@ footer-links-active:
 # 网站外观设置
 # 如果你不想要顶部大图，设置为false
 header-img: true
-navbar-col: "#FDDB76"
-navbar-text-col: "#0F59A4"
-navbar-border-col: "#F7E4B0"
-page-col: "#FFFDF7"
-text-col: "#2B2B2B"
+# 导航栏背景色：飞燕草蓝
+navbar-col: "#0F59A4"
+
+# 导航栏文字色：白色，保证在蓝色背景上有足够对比度
+navbar-text-col: "#FFFFFF"
+
+# 导航栏边框色：使用栀子色做点缀
+navbar-border-col: "#FDDB76"
+
+# 页面背景色：略带暖意的近白色
+page-col: "#FDFCF9"
+
+# 正文字体颜色：深灰，阅读舒适
+text-col: "#333333"
+
+# 链接颜色：呼应导航栏背景的飞燕草蓝
 link-col: "#0F59A4"
-hover-col: "#155EA8"
-footer-col: "#F7E4B0"
-footer-text-col: "#2B2B2B"
-footer-link-col: "#0F59A4"
+
+# 鼠标悬停颜色：使用栀子色，形成视觉跳跃
+hover-col: "#FDDB76"
+
+# 页脚背景色：与导航栏统一，使用飞燕草蓝
+footer-col: "#0F59A4"
+
+# 页脚文字颜色：同导航栏文字色
+footer-text-col: "#FFFFFF"
+
+# 页脚链接颜色：与鼠标悬停保持一致，用栀子色突出链接
+footer-link-col: "#FDDB76"
+
 
 
 
