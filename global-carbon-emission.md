@@ -24,11 +24,13 @@ title: "基于 CO2 和 GHG 相关指标数据分析全球碳排放情况"
 
 ## 结果展示（摘取部份网页动态3D图表及静态分析图）
 以下是动态图表的展示，可移动鼠标至图表上查看动态图表的变化过程并尝试交互。
-
+- [中国GHG部门数据](./image/China-ghg-sector_bar3d_punch_card.html)
+- [可拖动布局集合图表展示](./image/page_draggable_layout.html)
+- [GHG排放地图](./image/total-ghg-emissions_map_globe_3D.html)
+- [北半球气温预测](./image/北半球气温预测.html)
 - {% include China-ghg-sector_bar3d_punch_card.html %}
+- [中国人均GHG排放量](./image/中国人均GHG排放量.html)
 - {% include total-ghg-emissions_map_globe_3D.html %}
-- {% include 北半球气温预测.html %}
-- {% include 中国人均GHG排放量.html %}
 
 
 以下是动态图表的部份静态展示：
