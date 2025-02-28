@@ -5,7 +5,12 @@ description: 我的项目和作品集展示
 author: Wang Ruoxi
 
 # 导航链接 - 如果你想简化顶部导航，可以减少这里的项目或完全移除
-navbar-links: {}
+navbar-links:
+  关于我: "/README"
+  项目展示: "/index"
+  联系方式: "/contact"
+
+
 
 # 移除这部分如果你不需要顶部导航栏
 # 如果想完全没有导航栏，使用: navbar-links: {}
@@ -47,16 +52,16 @@ footer-links-active:
 # 网站外观设置
 # 如果你不想要顶部大图，设置为false
 header-img: true
-navbar-col: "#BADC58"
-navbar-text-col: "#333333"
-navbar-border-col: "#C7EDA0"
+navbar-col: "#5680E9"
+navbar-text-col: "#FFFFFF"
+navbar-border-col: "#84CEEB"
 page-col: "#FFFFFF"
-text-col: "#2F3542"
-link-col: "#6AB04C"
-hover-col: "#4CD137"
-footer-col: "#F1F9E4"
-footer-text-col: "#2F3542"
-footer-link-col: "#6AB04C"
+text-col: "#383838"
+link-col: "#C1346B"
+hover-col: "#5AB9EA"
+footer-col: "#E8F1F5"
+footer-text-col: "#383838"
+footer-link-col: "#5680E9"
 
 # 分析和评论设置 - 不需要可以忽略
 # google_analytics: ""
