@@ -1,0 +1,13 @@
+/* 隐藏 Google 翻译默认元素 */
+.goog-te-banner-frame, .goog-te-menu-value span {
+  display: none !important;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  #custom-translate-button {
+    padding: 4px 8px;
+    font-size: 14px;
+    margin-left: 10px !important;
+  }
+}
