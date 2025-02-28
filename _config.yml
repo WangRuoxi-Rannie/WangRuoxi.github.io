@@ -54,13 +54,13 @@ footer-links-active:
 # 如果你不想要顶部大图，设置为false
 header-img: true
 navbar-col: "#FDDB76"
-navbar-text-col: "#FFFFFF"
+navbar-text-col: "#0F59A4"
 navbar-border-col: "#F7E4B0"
 page-col: "#FFFDF7"
 text-col: "#2B2B2B"
 link-col: "#0F59A4"
-hover-col: "#155EA8"
-footer-col: "#F7E4B0"
+hover-col: "#FFFFFF"
+footer-col: "#0F59A4"
 footer-text-col: "#2B2B2B"
 footer-link-col: "#0F59A4"
 
