@@ -31,10 +31,12 @@ title: "基于 CO2 和 GHG 相关指标数据分析全球碳排放情况"
 - {% include total-ghg-emissions_map_globe_3D.html %}
 
 - 北半球气温预测
-
-- {% include page_draggable_layout.html %}
+- {% include north.html %}
+  
 - 中国人均GHG排放量
-
+- {% include page_draggable_layout.html %}
+  
+- {% include Chinese.html %}
 
 
 ## 查看完整项目文件
