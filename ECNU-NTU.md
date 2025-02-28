@@ -7,10 +7,10 @@ title: "ECNU-NTU Scientific Literacy development programme"
 Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 
 ## 答辩环节
-代表小组完成针对论文的结项答辩，在 QA 环节熟练用英语与教授沟通作答，获得了南阳商学院知名教授 Teoh 的高度评价。
+代表小组完成针对论文的结项答辩，在 QA 环节熟练用英语与教授沟通作答，获得了南洋商学院知名教授 Teoh 的高度评价。
 
 ## 能力收获
-学习了 IMRAD 的论文结构、制作科研海报的方法、锻炼了英语听说的能力，自傲组组织能力，增加了实践经验。
+学习了 IMRAD 的论文结构、制作科研海报的方法、锻炼了英语听说的能力，小组组织能力，增加了实践经验。
 
 ## 项目成绩
 整体课程获得 4.5 的 Grade Point，Grade Description 为 Excellent。
