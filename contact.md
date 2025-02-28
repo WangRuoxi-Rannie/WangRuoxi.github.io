@@ -4,7 +4,6 @@ title: "联系方式"
 permalink: /contact
 ---
 
-## 联系方式
 
 - **微信** ：Wrxxlsq11150901
   
@@ -13,3 +12,5 @@ permalink: /contact
 - **LinkedIn** ：[王若溪的LinkedIn主页](http://linkedin.com/in/ruoxi-wang-256a55325)
   
 - **手机号** ：+86 18082936005 （中国大陆） / +65 83607237 （新加坡）
+
+- **完整简历**： [王若溪-个人简历](pdf/project_summary.pdf)
