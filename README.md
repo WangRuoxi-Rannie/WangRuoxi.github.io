@@ -1,6 +1,6 @@
 # WangRuoxi.github.io
-My name is Wang Ruoxi, a Master's student in Applied Economics with a Bachelor's degree in Statistics, specializing in data analysis and economic research. I have gained industry research experience at Cinda Securities, where I authored in-depth reports, conducted financial data analysis, and compiled key meeting summaries. At OUTPUT, a new media company, I was responsible for data analytics, brand promotion, and public relations, optimizing media strategies and driving significant traffic growth.  
+我叫王若溪，目前正在攻读新加坡国立大学的应用经济学硕士，拥有华东师范大学统计学学士学位，专注于数据分析与经济研究。在信达证券实习期间，我积累了丰富的行业研究经验，撰写深度报告、开展财务数据分析，并整理关键会议纪要；在新媒体公司OUTPUT，我负责数据分析、品牌推广和公关工作，通过优化媒体策略，显著提升了流量。
 
-I also have experience in game development, having served as the lead narrative and numerical planner for a Tencent Games project, where I played a key role in designing and launching a minigame. Additionally, during my internship as a data analyst at Yunnan Olightek Opto-Electronic Technology, I worked on production data integration, conducted quality analysis, and proposed process improvements that enhanced product qualification rates.  
+此外，我还具备游戏开发经验，曾担任腾讯minigame项目的主文案与数值策划，主导设计并成功推出一款小游戏。在北方奥雷德光电科技担任数据分析实习生期间，我负责生产数据整合、质量分析，并提出流程改进建议，有效提高了产品合格率。
 
-Proficient in Python, R, and SQL, I excel in market research, data extraction, and visualization. I have led interdisciplinary research projects on global happiness, gender income disparities, and carbon emissions. With strong analytical skills, multitasking abilities, and fluency in both Chinese and English, I am committed to leveraging data-driven insights to support business and economic decision-making.
+我精通Python、R和SQL，擅长市场调研、数据提取及可视化展示，完成过与性别收入差距与碳排放问题相关的完整数据分析项目。还曾在华师大-南洋理工学术项目中作为小组领导人完成跨学科研究项目，探讨全球幸福指数问题。凭借出色的分析能力、多任务处理经验以及中英文双语优势，我致力于运用数据驱动的洞察分析企业和经济决策。
