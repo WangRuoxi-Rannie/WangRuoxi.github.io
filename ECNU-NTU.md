@@ -15,10 +15,12 @@ Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 ## 项目成绩
 整体课程获得 4.5 的 Grade Point，Grade Description 为 Excellent。
 
-## 结果展示（摘取部份图表及回归结果）
+## 结果展示（摘取部份静态及3D动态图表）
 ![NTU](image/NTU.png)
-![NTU2](image/NTU2.png)
-![NTU3](image/NTU3.png)
+
+- {% include 02.html %}
+- {% include 04.html %}
+- {% include 06.html %}
 
 ## 查看完整项目文件
 - 查看完整的 R Markdown 和 python 代码：[回归-Happiness-Score.Rmd](code/回归-Happiness-Score.Rmd) / [幸福指数与影响因素.ipynb](code/幸福指数与影响因素.ipynb)
