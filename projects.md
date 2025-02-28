@@ -4,7 +4,7 @@ title: "项目展示"
 permalink: /projects
 ---
 
-下面展示我做过的项目。具体代码文件和报告pdf/word文件可在对应链接末尾点击下载。
+下面展示我做过的项目。具体代码文件（.R/.Rmd/.ipynb）和报告pdf/word文件可在对应链接末尾点击**下载**。
 
 ## 我的项目列表
 
@@ -14,8 +14,8 @@ permalink: /projects
   
 - [杂乱名称下的车辆品牌型号匹配提取（R语言）](car-brand.md)
   
-- [ECNU-NTU Scientific Literacy development programme（R语言+pyton）](ECNU-NTU.md)
+- [ECNU-NTU Scientific Literacy development programme（R语言+python）](ECNU-NTU.md)
   
-- [Lofter 官方认证同人文手](lofter.md)
+- [Lofter 官方认证同人文手（文案创作）](lofter.md)
   
-- [腾讯游戏策划公开课，mini game 制作人](tencent.md)
+- [腾讯游戏策划公开课，mini game 制作人 （游戏制作）](tencent.md)
