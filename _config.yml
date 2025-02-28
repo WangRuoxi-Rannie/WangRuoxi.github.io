@@ -30,7 +30,7 @@ social-network-links:
   # stackoverflow: "yourno/yourname"
   # instagram: yourname
   # spotify: yourname
-  telephone: +86 18082936005/+65 83607237
+  telephone: +86 18082936005
   # steam: yourname
   # twitch: yourname
   # yelp: yourname
@@ -55,13 +55,13 @@ footer-links-active:
 header-img: true
 navbar-col: "#FDDB76"
 navbar-text-col: "#FFFFFF"
-navbar-border-col: "#E8B75E"
+navbar-border-col: "#F7E4B0"
 page-col: "#FFFDF7"
-text-col: "#333333"
+text-col: "#2B2B2B"
 link-col: "#0F59A4"
 hover-col: "#155EA8"
-footer-col: "#E8B75E"
-footer-text-col: "#333333"
+footer-col: "#F7E4B0"
+footer-text-col: "#2B2B2B"
 footer-link-col: "#0F59A4"
 
 
