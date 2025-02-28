@@ -18,9 +18,11 @@ Happiness and Life Satisfaction: Exploring the Factors 的结项论文。
 ## 结果展示（摘取部份静态及3D动态图表）
 ![NTU](image/NTU.png)
 
-- {% include 02.html %}
-- {% include 04.html %}
-- {% include 06.html %}
+- {% include ecnu.html %}
+  
+- {% include ntu.html %}
+  
+- {% include ecnu-ntu.html %}
 
 ## 查看完整项目文件
 - 查看完整的 R Markdown 和 python 代码：[回归-Happiness-Score.Rmd](code/回归-Happiness-Score.Rmd) / [幸福指数与影响因素.ipynb](code/幸福指数与影响因素.ipynb)
