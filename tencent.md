@@ -2,7 +2,7 @@
 layout: default
 title: "腾讯游戏策划公开课，mini game 制作人"
 ---
-![logo](image/分支选项.png)
+![logo](image/logo.jpg)
 
 
 ## 框架构建
