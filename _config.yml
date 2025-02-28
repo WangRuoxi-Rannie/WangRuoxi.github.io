@@ -97,3 +97,8 @@ defaults:
     values:
       layout: "page"
       comments: false
+
+
+# 在现有配置末尾添加
+custom_css:
+  - "/assets/css/custom.css"
