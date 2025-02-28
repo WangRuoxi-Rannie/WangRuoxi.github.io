@@ -30,14 +30,12 @@ title: "基于 CO2 和 GHG 相关指标数据分析全球碳排放情况"
 - GHG排放地图
 - {% include total-ghg-emissions_map_globe_3D.html %}
 
-- [北半球气温预测](./image/北半球气温预测.html)
+- 北半球气温预测
+
 - {% include page_draggable_layout.html %}
-- [中国人均GHG排放量](./image/中国人均GHG排放量.html)
+- 中国人均GHG排放量
 
 
-以下是动态图表的部份静态展示：
-![word-cloud](image/word-cloud.png)
-![GHG排放占比](image/GHG排放占比.png)
 
 ## 查看完整项目文件
 - 查看完整的python代码：[数据可视化.ipynb](code/数据可视化部分代码.ipynb) \ [描述性统计.ipynb](code/描述性统计.ipynb) \ [北半球气温预测.ipynb](code/北半球气温预测最终版.ipynb)
