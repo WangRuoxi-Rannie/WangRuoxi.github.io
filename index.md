@@ -2,19 +2,13 @@
 layout: default
 title: "欢迎来到我的个人网站"
 ---
-下面展示我做过的项目。具体代码文件和报告pdf/word文件可在对应链接末尾点击下载。
+# 欢迎来到我的个人网站
 
-## 我的项目列表
+你好😊，我是 **王若溪**，一名02年新国立在读研究生！擅长使用 R 和 Python 进行数据处理和可视化。我创建这个网站来展示我的过往项目和学习成果，期待和点进这里的善良大方的HR哥哥姐姐有更进一步的交流！！。
 
-- [基于世界范围内男女性劳动力市场表现数据的性别不平等问题研究（R语言）](gender-inequality.md)
-  
-- [基于 CO2 和 GHG 相关指标数据分析全球碳排放情况（python）](global-carbon-emission.md)
-  
-- [杂乱名称下的车辆品牌型号匹配提取（R语言）](car-brand.md)
-  
-- [ECNU-NTU Scientific Literacy development programme（R语言+pyton）](ECNU-NTU.md)
-  
-- [Lofter 官方认证同人文手](lofter.md)
-  
-- [腾讯游戏策划公开课，mini game 制作人](tencent.md)
+可点击顶部三个栏目了解更多。
+
+- 关于我→*经典老番*·自我介绍环节🎈
+- 项目展示→*宝藏合集*·代码数分+游戏制作+文本创作🍱
+- 联系方式→*Find me全家桶*·微信+邮箱+电话+领英📞
   
