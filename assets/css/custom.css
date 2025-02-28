@@ -3,11 +3,3 @@
   display: none !important;
 }
 
-/* 移动端适配 */
-@media (max-width: 768px) {
-  #custom-translate-button {
-    padding: 4px 8px;
-    font-size: 14px;
-    margin-left: 10px !important;
-  }
-}
