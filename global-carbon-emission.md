@@ -23,10 +23,9 @@ title: "基于 CO2 和 GHG 相关指标数据分析全球碳排放情况"
 构建多元线性回归，高次线性回归，人工神经网络等不同模型，并考察不同模型的拟合效果。
 
 ## 结果展示（摘取部份网页动态3D图表及静态分析图）
-以下是动态图表的网页链接，可点击对应的名称查看动态图表的变化过程并尝试交互。
+以下是动态图表的展示，可移动鼠标至图表上查看动态图表的变化过程并尝试交互。
 
 - {% include China-ghg-sector_bar3d_punch_card.html %}
-- {% include page_draggable_layout.html %}
 - {% include total-ghg-emissions_map_globe_3D.html %}
 - {% include 北半球气温预测.html %}
 - {% include 中国人均GHG排放量.html %}
