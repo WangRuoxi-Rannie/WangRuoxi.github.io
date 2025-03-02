@@ -14,16 +14,16 @@
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<!-- 翻译按钮样式 -->
+<!-- 翻译按钮样式 - 简化样式避免冲突 -->
 <style>
-  .language-switch {
+  .my-language-switch {
     position: fixed;
     right: 20px;
     top: 70px;
-    z-index: 1000;
+    z-index: 9999;
   }
   
-  .custom-translate-button {
+  .my-translate-button {
     background-color: #4285f4;
     color: white;
     border: none;
@@ -39,21 +39,22 @@
     display: none !important;
   }
   
-  .skiptranslate {
-    display: none !important;
-  }
-  
+  /* 修复顶部位移问题 */
   body {
     top: 0 !important;
+  }
+  
+  .skiptranslate {
+    display: none !important;
   }
 </style>
 
 <!-- 翻译控件和按钮 -->
 <div id="google_translate_element" style="display:none;"></div>
 
-<div class="language-switch">
-  <button class="custom-translate-button" onclick="changeLanguage('zh-CN')">中文</button>
-  <button class="custom-translate-button" onclick="changeLanguage('en')">English</button>
+<div class="my-language-switch">
+  <button class="my-translate-button" onclick="changeLanguage('zh-CN')">中文</button>
+  <button class="my-translate-button" onclick="changeLanguage('en')">English</button>
 </div>
 
 <!-- 翻译功能脚本 -->
@@ -63,13 +64,11 @@
     if (select) {
       select.value = langCode;
       select.dispatchEvent(new Event('change'));
-      
-      // 存储用户语言偏好
       localStorage.setItem('preferredLanguage', langCode);
     }
   }
   
-  // 页面加载时检查并应用上次选择的语言
+  // 页面加载时应用上次选择的语言
   document.addEventListener('DOMContentLoaded', function() {
     var savedLang = localStorage.getItem('preferredLanguage');
     if (savedLang && savedLang !== 'zh-CN') {
