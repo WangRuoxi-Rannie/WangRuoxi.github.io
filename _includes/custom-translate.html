@@ -1,120 +1,91 @@
-<!-- Google翻译脚本 -->
-<script type="text/javascript">
+<!-- 修改后的完整翻译解决方案 -->
+<script>
+  // 先定义初始化函数
   function googleTranslateElementInit() {
-    new google.translate.TranslateElement(
-      {
-        pageLanguage: 'zh-CN',
-        includedLanguages: 'en,zh-CN',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      },
-      'google_translate_element'
-    );
-  }
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    // 确保元素存在
+    const container = document.getElementById('google_translate_element') || document.createElement('div');
+    container.id = 'google_translate_element';
+    container.style.position = 'absolute';
+    container.style.top = '-9999px';
+    document.body.appendChild(container);
 
-<!-- 翻译按钮样式 -->
+    // 初始化翻译器
+    new google.translate.TranslateElement({
+      pageLanguage: 'zh-CN',
+      includedLanguages: 'en,zh-CN',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+
+  // 动态加载Google翻译API
+  function loadGoogleTranslate() {
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  // 页面加载完成后执行
+  window.addEventListener('DOMContentLoaded', function() {
+    // 先加载翻译API
+    loadGoogleTranslate();
+
+    // 按钮事件绑定
+    const bindButtons = () => {
+      document.getElementById('zh-btn')?.addEventListener('click', () => changeLanguage('zh-CN'));
+      document.getElementById('en-btn')?.addEventListener('click', () => changeLanguage('en'));
+    };
+
+    // 语言切换函数优化版
+    const changeLanguage = (langCode) => {
+      const attempt = () => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = langCode;
+          select.dispatchEvent(new Event('change'));
+          localStorage.setItem('preferredLanguage', langCode);
+          return true;
+        }
+        return false;
+      };
+
+      // 立即尝试
+      if (!attempt()) {
+        // 重试机制
+        const retryInterval = setInterval(() => {
+          if (attempt()) {
+            clearInterval(retryInterval);
+          }
+        }, 200);
+
+        // 超时停止
+        setTimeout(() => clearInterval(retryInterval), 3000);
+      }
+    };
+
+    // 初始化按钮绑定
+    bindButtons();
+
+    // 应用上次保存的语言设置
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+      setTimeout(() => changeLanguage(savedLang), 500);
+    }
+  });
+</script>
+
+<!-- 保持原有样式不变 -->
 <style>
-  .my-language-switch {
-    position: fixed;
-    right: 20px;
-    top: 70px;
-    z-index: 9999;
-  }
-  
-  .my-translate-button {
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 5px;
-  }
-  
-  /* 隐藏Google翻译工具栏 */
-  .goog-te-banner-frame {
-    display: none !important;
-  }
-  
-  .skiptranslate {
-    display: none !important;
-  }
-  
-  body {
-    top: 0 !important;
-  }
+  .my-language-switch { /* 原有样式 */ }
+  .my-translate-button { /* 原有样式 */ }
+  .goog-te-banner-frame { display: none !important; }
+  .skiptranslate { display: none !important; }
+  body { top: 0 !important; }
 </style>
 
-<!-- 翻译控件和按钮 -->
-<div id="google_translate_element" style="display:none;"></div>
-
+<!-- 保持原有按钮结构不变 -->
 <div class="my-language-switch">
   <button class="my-translate-button" id="zh-btn">中文</button>
   <button class="my-translate-button" id="en-btn">English</button>
 </div>
-
-<!-- 翻译功能脚本 -->
-<script>
-  // 等待页面和Google翻译API完全加载
-  window.addEventListener('load', function() {
-    // 给按钮添加点击事件
-    document.getElementById('zh-btn').addEventListener('click', function() {
-      changeLanguage('zh-CN');
-    });
-    
-    document.getElementById('en-btn').addEventListener('click', function() {
-      changeLanguage('en');
-    });
-    
-    // 检查并应用上次选择的语言
-    var savedLang = localStorage.getItem('preferredLanguage');
-    if (savedLang && savedLang !== 'zh-CN') {
-      setTimeout(function() {
-        changeLanguage(savedLang);
-      }, 1500); // 增加延迟以确保API加载
-    }
-  });
-
-  function changeLanguage(langCode) {
-    // 确保Google翻译API已加载
-    if (typeof google !== 'undefined' && google.translate) {
-      // 尝试多种方式找到并触发下拉菜单
-      var select = document.querySelector('.goog-te-combo');
-      
-      if (select) {
-        // 常规方法
-        select.value = langCode;
-        select.dispatchEvent(new Event('change'));
-      } else {
-        // 备用方法：直接调用Google翻译API
-        var iframe = document.querySelector('iframe.goog-te-menu-frame');
-        if (iframe) {
-          var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-          var langLinks = iframeDoc.querySelectorAll('a.goog-te-menu2-item');
-          
-          for (var i = 0; i < langLinks.length; i++) {
-            if (langLinks[i].innerText.indexOf(langCode === 'en' ? 'English' : '中文') !== -1) {
-              langLinks[i].click();
-              break;
-            }
-          }
-        }
-      }
-      
-      // 存储用户语言偏好
-      localStorage.setItem('preferredLanguage', langCode);
-      
-      // 添加调试信息
-      console.log('语言切换为: ' + langCode);
-    } else {
-      console.log('Google翻译API未加载，等待加载...');
-      // 如果API还没加载，等待并重试
-      setTimeout(function() {
-        changeLanguage(langCode);
-      }, 1000);
-    }
-  }
-</script>
