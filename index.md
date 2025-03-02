@@ -2,7 +2,6 @@
 layout: default
 title: "欢迎来到我的个人网站"
 ---
-{% include custom-translate.html %}
 
 # 欢迎来到王若溪的个人网站🍉
 
