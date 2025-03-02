@@ -1,25 +1,10 @@
-<!-- Google 翻译容器（隐藏） -->
-<div id="google_translate_element" style="display:none;"></div>
-
-<!-- 自定义翻译按钮 -->
-<button id="custom-translate-button" 
-        style="background: {{ site.navbar-col }}; 
-               color: {{ site.navbar-text-col }};
-               border: 1px solid {{ site.navbar-border-col }};
-               padding: 6px 12px;
-               border-radius: 4px;
-               cursor: pointer;
-               margin-left: 20px;">
-  🌐 中/EN
-</button>
-
-<!-- Google 翻译脚本 -->
-<script>
+<!-- Google翻译脚本 -->
+<script type="text/javascript">
   function googleTranslateElementInit() {
     new google.translate.TranslateElement(
-      { 
-        pageLanguage: 'zh',
-        includedLanguages: 'en,zh',
+      {
+        pageLanguage: 'zh-CN',
+        includedLanguages: 'en,zh-CN',
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       },
@@ -27,19 +12,70 @@
     );
   }
 </script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<!-- 交互脚本 -->
+<!-- 翻译按钮样式 -->
+<style>
+  .language-switch {
+    position: fixed;
+    right: 20px;
+    top: 70px;
+    z-index: 1000;
+  }
+  
+  .custom-translate-button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  
+  /* 隐藏Google翻译工具栏 */
+  .goog-te-banner-frame {
+    display: none !important;
+  }
+  
+  .skiptranslate {
+    display: none !important;
+  }
+  
+  body {
+    top: 0 !important;
+  }
+</style>
+
+<!-- 翻译控件和按钮 -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<div class="language-switch">
+  <button class="custom-translate-button" onclick="changeLanguage('zh-CN')">中文</button>
+  <button class="custom-translate-button" onclick="changeLanguage('en')">English</button>
+</div>
+
+<!-- 翻译功能脚本 -->
 <script>
-  document.getElementById('custom-translate-button').addEventListener('click', () => {
-    const select = document.querySelector('.goog-te-combo');
+  function changeLanguage(langCode) {
+    var select = document.querySelector('.goog-te-combo');
     if (select) {
-      select.value = select.value === 'en' ? 'zh' : 'en';
+      select.value = langCode;
       select.dispatchEvent(new Event('change'));
+      
+      // 存储用户语言偏好
+      localStorage.setItem('preferredLanguage', langCode);
     }
-    // 更新按钮颜色
-    const button = document.getElementById('custom-translate-button');
-    button.style.backgroundColor = select.value === 'en' ? '#0F59A4' : '#FDDB76';
-    button.style.color = select.value === 'en' ? 'white' : '#0F59A4';
+  }
+  
+  // 页面加载时检查并应用上次选择的语言
+  document.addEventListener('DOMContentLoaded', function() {
+    var savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang && savedLang !== 'zh-CN') {
+      setTimeout(function() {
+        changeLanguage(savedLang);
+      }, 1000);
+    }
   });
 </script>
