@@ -14,7 +14,7 @@
 </script>
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<!-- 翻译按钮样式 - 简化样式避免冲突 -->
+<!-- 翻译按钮样式 -->
 <style>
   .my-language-switch {
     position: fixed;
@@ -39,13 +39,12 @@
     display: none !important;
   }
   
-  /* 修复顶部位移问题 */
-  body {
-    top: 0 !important;
-  }
-  
   .skiptranslate {
     display: none !important;
+  }
+  
+  body {
+    top: 0 !important;
   }
 </style>
 
@@ -53,28 +52,69 @@
 <div id="google_translate_element" style="display:none;"></div>
 
 <div class="my-language-switch">
-  <button class="my-translate-button" onclick="changeLanguage('zh-CN')">中文</button>
-  <button class="my-translate-button" onclick="changeLanguage('en')">English</button>
+  <button class="my-translate-button" id="zh-btn">中文</button>
+  <button class="my-translate-button" id="en-btn">English</button>
 </div>
 
 <!-- 翻译功能脚本 -->
 <script>
-  function changeLanguage(langCode) {
-    var select = document.querySelector('.goog-te-combo');
-    if (select) {
-      select.value = langCode;
-      select.dispatchEvent(new Event('change'));
-      localStorage.setItem('preferredLanguage', langCode);
-    }
-  }
-  
-  // 页面加载时应用上次选择的语言
-  document.addEventListener('DOMContentLoaded', function() {
+  // 等待页面和Google翻译API完全加载
+  window.addEventListener('load', function() {
+    // 给按钮添加点击事件
+    document.getElementById('zh-btn').addEventListener('click', function() {
+      changeLanguage('zh-CN');
+    });
+    
+    document.getElementById('en-btn').addEventListener('click', function() {
+      changeLanguage('en');
+    });
+    
+    // 检查并应用上次选择的语言
     var savedLang = localStorage.getItem('preferredLanguage');
     if (savedLang && savedLang !== 'zh-CN') {
       setTimeout(function() {
         changeLanguage(savedLang);
-      }, 1000);
+      }, 1500); // 增加延迟以确保API加载
     }
   });
+
+  function changeLanguage(langCode) {
+    // 确保Google翻译API已加载
+    if (typeof google !== 'undefined' && google.translate) {
+      // 尝试多种方式找到并触发下拉菜单
+      var select = document.querySelector('.goog-te-combo');
+      
+      if (select) {
+        // 常规方法
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+      } else {
+        // 备用方法：直接调用Google翻译API
+        var iframe = document.querySelector('iframe.goog-te-menu-frame');
+        if (iframe) {
+          var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          var langLinks = iframeDoc.querySelectorAll('a.goog-te-menu2-item');
+          
+          for (var i = 0; i < langLinks.length; i++) {
+            if (langLinks[i].innerText.indexOf(langCode === 'en' ? 'English' : '中文') !== -1) {
+              langLinks[i].click();
+              break;
+            }
+          }
+        }
+      }
+      
+      // 存储用户语言偏好
+      localStorage.setItem('preferredLanguage', langCode);
+      
+      // 添加调试信息
+      console.log('语言切换为: ' + langCode);
+    } else {
+      console.log('Google翻译API未加载，等待加载...');
+      // 如果API还没加载，等待并重试
+      setTimeout(function() {
+        changeLanguage(langCode);
+      }, 1000);
+    }
+  }
 </script>
