@@ -38,3 +38,4 @@ title: "腾讯游戏策划公开课，mini game 制作人"
 ## 查看完整项目文件
 - minigame《千曲解意录》世界观与人物设定大纲：[《千曲解意录》世界观+人物设定.doc](pdf/《百物行》世界观+人物设定.doc)
 - 数值演算：[数值推导.xlsx](pdf/推导.xlsx)
+- 完整游戏demo：[百度网盘链接: https://pan.baidu.com/s/1h6UcPu75NL1nRveJUE8knw?pwd=35pw](https://pan.baidu.com/s/1h6UcPu75NL1nRveJUE8knw?pwd=35pw) **提取码:** 35pw
