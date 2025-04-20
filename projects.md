@@ -7,6 +7,7 @@ permalink: /projects
 下面展示我做过的项目。具体代码文件（.R/.Rmd/.ipynb）和报告pdf/word文件可在对应链接末尾点击**下载**。
 
 ## 我的项目列表
+- [银行营销数据机器学习模型对比与集成优化（Machine Learning）](ML.md)
 
 - [基于世界范围内男女性劳动力市场表现数据的性别不平等问题研究（R语言）](gender-inequality.md)
   
