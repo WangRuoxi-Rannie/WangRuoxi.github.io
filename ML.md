@@ -22,13 +22,18 @@ title: "银行营销数据机器学习模型对比与集成优化"
 
 
 ## 结果展示
-![模型性能比较 1](image/ML1.png)  
-![模型性能比较 2](image/ML2.png)  
+- 定量变量-直方图+箱线图可视化  
+![模型性能比较 1](image/ML1.png)
+- 定性变量-饼图可视化  
+![模型性能比较 2](image/ML2.png)
+- 不同机器学习模型结果比较 
 ![特征重要性分析](image/ML3.png)  
-![各模型 ROC 曲线](image/ML4.png)  
-![集成模型效果](image/ML5.png)  
+![各模型 ROC 曲线](image/ML4.png)
+- 混合模型效果展示 
+![集成模型效果](image/ML5.png)
+- 最好的模型-GBM 变量重要性展示   
 ![模型可解释性分析](image/ML6.png)  
 
 ## 查看完整项目文件
 - R 代码下载：[gp_final.R](code/gp_final.R)  
-- 报告下载：[M_LProject.pdf](pdf/group2.pdf)  
+- 报告下载：[ML_Project.pdf](pdf/group2.pdf)  
