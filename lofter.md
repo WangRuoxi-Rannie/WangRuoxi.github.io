@@ -12,7 +12,7 @@ title: "Lofter 官方认证同人文手"
 - 策划多场24小时节庆联文企划，从主题框架与排期制定、宣传文案撰写，到海报设计与30+知名作者邀约，推动项目覆盖50万+读者，社群互动率提升20%。
 
 ## 主页数据展示
-![lof](image/lof.jpg)
+![lof](image/lofnew.jpg)
 
 ## Lofter个人主页网址
 [Rannie西西的Lofter博客](https://rannie453.lofter.com)
