@@ -4,7 +4,7 @@ title: "项目展示"
 permalink: /projects
 ---
 
-下面展示我做过的项目。具体代码文件（.R/.Rmd/.ipynb）和报告pdf/word文件可在对应链接末尾点击**下载**。
+下面展示我做过的学术项目、游戏制作、同人创作。具体代码文件（.R/.Rmd/.ipynb）、游戏demo、报告pdf/word文件可在对应链接末尾点击**下载**。
 
 ## 我的项目列表
 - [银行营销数据机器学习模型对比与集成优化（Machine Learning）](ML.md)
